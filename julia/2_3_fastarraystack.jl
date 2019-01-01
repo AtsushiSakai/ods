@@ -1,22 +1,19 @@
 "
- Array stack implementation  
+ Fast Array stack implementation  
 
- author: Atsushi Sakai
-
- Ref: Open Data Structure book, chapter 2.2. 
-
+ Ref: Open Data Structure book, chapter 2.3. 
 "
 
 using Test
 
-mutable struct ArrayStack
+mutable struct FastArrayStack
     a::Array
     n::Int64
 
-    ArrayStack() = new([], 0)
+    FastArrayStack() = new([], 0)
 end
 
-function get(as::ArrayStack, i::Int64)
+function get(as::FastArrayStack, i::Int64)
 
     if i < 0 || i > as.n
         error("Index overflow")
@@ -25,7 +22,7 @@ function get(as::ArrayStack, i::Int64)
     return as.a[i]
 end
 
-function set(as::ArrayStack, i, x)
+function set(as::FastArrayStack, i, x)
 
     if i < 0 || i > as.n
         error("Index overflow")
@@ -37,7 +34,7 @@ function set(as::ArrayStack, i, x)
     return y
 end
 
-function add(as::ArrayStack, i, x)
+function add(as::FastArrayStack, i, x)
 
     if i < 0 || i > as.n +1
         error("Index overflow")
@@ -52,7 +49,7 @@ function add(as::ArrayStack, i, x)
     as.n += 1
 end
 
-function remove(as::ArrayStack, i)
+function remove(as::FastArrayStack, i)
 
     if i < 0 || i > as.n +1
         error("Index overflow")
@@ -70,14 +67,14 @@ function remove(as::ArrayStack, i)
 end
 
 
-function _resize(as::ArrayStack)
+function _resize(as::FastArrayStack)
     b = fill(NaN, maximum([1, as.n*2]))
     b[1:as.n] = as.a[1:as.n]
     as.a = b
 end
 
 
-function print(as::ArrayStack)
+function print(as::FastArrayStack)
     println(as.a,",",as.n)
 end
 
@@ -85,7 +82,7 @@ end
 function test()
     println(PROGRAM_FILE," start!!")
 
-    arraystack = ArrayStack()
+    arraystack = FastArrayStack()
 
     add(arraystack, 1, 2.0)
     print(arraystack)
