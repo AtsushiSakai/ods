@@ -1,5 +1,5 @@
 "
- Array stack implementation  
+ Array stack Julia implementation  
 
  Ref: Open Data Structure book, chapter 2.2. 
 "
@@ -13,69 +13,69 @@ mutable struct ArrayStack
     ArrayStack() = new([], 0)
 end
 
-function get(as::ArrayStack, i::Int64)
+function get(self::ArrayStack, i::Int64)
 
-    if i < 0 || i > as.n
+    if i < 0 || i > self.n
         error("Index overflow")
     end
 
-    return as.a[i]
+    return self.a[i]
 end
 
-function set(as::ArrayStack, i, x)
+function set(self::ArrayStack, i, x)
 
-    if i < 0 || i > as.n
+    if i < 0 || i > self.n
         error("Index overflow")
     end
 
-    y = as.a[i]
-    as.a[i] = x
+    y = self.a[i]
+    self.a[i] = x
 
     return y
 end
 
-function add(as::ArrayStack, i, x)
+function add(self::ArrayStack, i, x)
 
-    if i < 0 || i > as.n +1
+    if i < 0 || i > self.n +1
         error("Index overflow")
     end
 
-    if as.n == length(as.a)
-        _resize(as)
+    if self.n == length(self.a)
+        _resize(self)
     end
 
-    as.a[i+1:as.n+1] = as.a[i:as.n]
-    as.a[i] = x
-    as.n += 1
+    self.a[i+1:self.n+1] = self.a[i:self.n]
+    self.a[i] = x
+    self.n += 1
 end
 
-function remove(as::ArrayStack, i)
+function remove(self::ArrayStack, i)
 
-    if i < 0 || i > as.n +1
+    if i < 0 || i > self.n +1
         error("Index overflow")
     end
 
-    x = as.a[i]
-    as.a[i:as.n-1] = as.a[i+1:as.n]
-    as.a[as.n] = NaN
-    as.n -= 1
-    if length(as.a) >= 3*as.n
-        _resize(as)
+    x = self.a[i]
+    self.a[i:self.n-1] = self.a[i+1:self.n]
+    self.a[self.n] = NaN
+    self.n -= 1
+    if length(self.a) >= 3*self.n
+        _resize(self)
     end
 
     return x
 end
 
 
-function _resize(as::ArrayStack)
-    b = fill(NaN, maximum([1, as.n*2]))
-    b[1:as.n] = as.a[1:as.n]
-    as.a = b
+function _resize(self::ArrayStack)
+    b = fill(NaN, maximum([1, self.n*2]))
+    b[1:self.n] = self.a[1:self.n]
+    self.a = b
 end
 
 
-function print(as::ArrayStack)
-    println(as.a,",",as.n)
+function print(self::ArrayStack)
+    println(self.a,",n:",self.n)
 end
 
 
@@ -102,6 +102,7 @@ function test()
         remove(arraystack, 3)
         print(arraystack)
     end
+    @test arraystack.n == 3
 
     println(PROGRAM_FILE," Done!!")
 end
