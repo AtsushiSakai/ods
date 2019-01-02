@@ -11,6 +11,7 @@ mutable struct ArrayStack
     n::Int64
 
     ArrayStack() = new([], 0)
+    ArrayStack(input::Array) = new(input, length(input))
 end
 
 function get(self::ArrayStack, i::Int64)
@@ -34,6 +35,10 @@ function set(self::ArrayStack, i, x)
     return y
 end
 
+function size(self::ArrayStack)
+    return self.n
+end
+
 function add(self::ArrayStack, i, x)
 
     if i < 0 || i > self.n +1
@@ -44,7 +49,9 @@ function add(self::ArrayStack, i, x)
         _resize(self)
     end
 
-    self.a[i+1:self.n+1] = self.a[i:self.n]
+    if self.n != 0
+        self.a[i+1:self.n+1] = self.a[i:self.n]
+    end
     self.a[i] = x
     self.n += 1
 end
@@ -57,7 +64,7 @@ function remove(self::ArrayStack, i)
 
     x = self.a[i]
     self.a[i:self.n-1] = self.a[i+1:self.n]
-    self.a[self.n] = NaN
+    # self.a[self.n] = ""
     self.n -= 1
     if length(self.a) >= 3*self.n
         _resize(self)
@@ -68,13 +75,13 @@ end
 
 
 function _resize(self::ArrayStack)
-    b = fill(NaN, maximum([1, self.n*2]))
+    b = similar(self.a, maximum([1, self.n*2])) 
     b[1:self.n] = self.a[1:self.n]
     self.a = b
 end
 
 
-function print(self::ArrayStack)
+function Print(self::ArrayStack)
     println(self.a,",n:",self.n)
 end
 
@@ -85,22 +92,22 @@ function test()
     arraystack = ArrayStack()
 
     add(arraystack, 1, 2.0)
-    print(arraystack)
+    Print(arraystack)
     add(arraystack, 2, 4.0)
-    print(arraystack)
+    Print(arraystack)
     set(arraystack, 2, 1.0)
-    print(arraystack)
+    Print(arraystack)
     println(get(arraystack, 2))
     remove(arraystack, 1)
-    print(arraystack)
+    Print(arraystack)
 
     for i in 1:10
         add(arraystack, 2, i)
     end
-    print(arraystack)
+    Print(arraystack)
     for i in 1:8
         remove(arraystack, 3)
-        print(arraystack)
+        Print(arraystack)
     end
     @test arraystack.n == 3
 
