@@ -1,19 +1,19 @@
 "
- Array stack Julia implementation  
+ Fast Array stack Julia implementation  
 
  Ref: Open Data Structure book, chapter 2.2. 
 "
 
 using Test
 
-mutable struct ArrayStack
+mutable struct FastArrayStack
     a::Array
     n::Int64
 
-    ArrayStack() = new([], 0)
+    FastArrayStack() = new([], 0)
 end
 
-function get(self::ArrayStack, i::Int64)
+function get(self::FastArrayStack, i::Int64)
 
     if i < 0 || i > self.n
         error("Index overflow")
@@ -22,7 +22,7 @@ function get(self::ArrayStack, i::Int64)
     return self.a[i]
 end
 
-function set(self::ArrayStack, i, x)
+function set(self::FastArrayStack, i, x)
 
     if i < 0 || i > self.n
         error("Index overflow")
@@ -34,7 +34,7 @@ function set(self::ArrayStack, i, x)
     return y
 end
 
-function add(self::ArrayStack, i, x)
+function add(self::FastArrayStack, i, x)
 
     if i < 0 || i > self.n +1
         error("Index overflow")
@@ -49,7 +49,7 @@ function add(self::ArrayStack, i, x)
     self.n += 1
 end
 
-function remove(self::ArrayStack, i)
+function remove(self::FastArrayStack, i)
 
     if i < 0 || i > self.n +1
         error("Index overflow")
@@ -67,14 +67,14 @@ function remove(self::ArrayStack, i)
 end
 
 
-function _resize(self::ArrayStack)
+function _resize(self::FastArrayStack)
     b = fill(NaN, maximum([1, self.n*2]))
     b[1:self.n] = self.a[1:self.n]
     self.a = b
 end
 
 
-function print(self::ArrayStack)
+function print(self::FastArrayStack)
     println(self.a,",n:",self.n)
 end
 
@@ -82,7 +82,7 @@ end
 function test()
     println(PROGRAM_FILE," start!!")
 
-    arraystack = ArrayStack()
+    arraystack = FastArrayStack()
 
     add(arraystack, 1, 2.0)
     print(arraystack)

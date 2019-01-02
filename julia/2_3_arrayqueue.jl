@@ -1,7 +1,7 @@
 "
  Array queue Julia implementation  
 
- Ref: Open Data Structure book, chapter 2.4. 
+ Ref: Open Data Structure book, chapter 2.3. 
 "
 
 using Test
